@@ -30,7 +30,7 @@ class DBHelper {
   // expense table columns
   static final String COLUMN_EXPENSE_ID = "expId";
   static final String COLUMN_EXPENSE_AMOUNT = "amt";
-  static final String COLUMN_EXPENSE_DATE = 'date';
+  static final String COLUMN_EXPENSE_DATE = "date";
   static final String COLUMN_EXPENSE_TYPE = "type";
   static final String COLUMN_EXPENSE_TITLE = "title";
   static final String COLUMN_EXPENSE_DESC = "desc";
@@ -38,12 +38,15 @@ class DBHelper {
 
 // categoroized table columns
 
-  static final String COLUMN_CATOGORY_ID = " cId";
-  static final String COLUMN_CATOGORY_PETROL = "petrol";
-  static final String COLUMN_CATOGORY_PGRENT = " pgrent";
-  static final String COLUMN_CATOGORY_SHOPING = "shopping";
-  static final String COLUMN_CATOGORY_FEES = "fees";
-  static final String COLUMN_CATOGORY_RESTAURANT = "restaurant";
+  static final String COLUMN_CATOGORY_ID = "cId";
+  static final String COLUMN_CATOGORY_NAME = "cNAME";
+  static final String COLUMN_CATOGORY_IMG_PATH = "cImg";
+
+  // static final String COLUMN_CATOGORY_PETROL = "petrol";
+  // static final String COLUMN_CATOGORY_PGRENT = " pgrent";
+  // static final String COLUMN_CATOGORY_SHOPING = "shopping";
+  // static final String COLUMN_CATOGORY_FEES = "fees";
+  // static final String COLUMN_CATOGORY_RESTAURANT = "restaurant";
   //notes column add uid here also
   static final String TABLE_NOTE_NAME = "note";
   static final String COLUMN_NOTE_ID = "note_id";
@@ -63,11 +66,11 @@ class DBHelper {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-            "create table $USER_TABLE($COLUMN_USER_ID integer primary key autoincrement,$COLUMN_USER_EMAIL text unique, $COLUMN_USER_MOBILENUMBER text , $COLUMN_USER_PASSWORD text, $COLUMN_USER_REPASSWORD text)");
+            "create table $USER_TABLE ( $COLUMN_USER_ID integer primary key autoincrement,$COLUMN_USER_EMAIL text unique, $COLUMN_USER_MOBILENUMBER text , $COLUMN_USER_PASSWORD text, $COLUMN_USER_REPASSWORD text)");
         db.execute(
-            "create table $EXPENSE_TABLE($COLUMN_EXPENSE_ID integer primary key autoincrement,$COLUMN_USER_ID integer, $COLUMN_EXPENSE_AMOUNT integer , $COLUMN_EXPENSE_DATE text, $COLUMN_EXPENSE_TITLE text , $COLUMN_EXPENSE_DESC text, $COLUMN_EXPENSE_REMBALANCE integer)");
+            "create table $EXPENSE_TABLE ( $COLUMN_EXPENSE_ID integer primary key autoincrement,$COLUMN_USER_ID integer, $COLUMN_EXPENSE_AMOUNT real , $COLUMN_EXPENSE_DATE text, $COLUMN_EXPENSE_TITLE text , $COLUMN_EXPENSE_DESC text, $COLUMN_EXPENSE_REMBALANCE real, $COLUMN_CATOGORY_ID integer, $COLUMN_EXPENSE_TYPE text)");
         db.execute(
-            "create table $CATOGORIES_TABLE($COLUMN_CATOGORY_ID integer primary key autoincrement,$COLUMN_CATOGORY_PETROL integer , $COLUMN_CATOGORY_PGRENT integer , $COLUMN_CATOGORY_SHOPING text, $COLUMN_CATOGORY_FEES integer , $COLUMN_CATOGORY_RESTAURANT text, )");
+            "create table $CATOGORIES_TABLE ( $COLUMN_CATOGORY_ID integer primary key autoincrement,$COLUMN_CATOGORY_NAME text , $COLUMN_CATOGORY_IMG_PATH text)");
       },
     );
   }
@@ -86,8 +89,8 @@ class DBHelper {
     var db = await getDB();
     var uid = await getUUID();
     List<expenseModel> mData = [];
-    var data = await db
-        .query(USER_TABLE, where: "$COLUMN_USER_ID = ?", whereArgs: ['$uid']);
+    var data = await db.query(EXPENSE_TABLE,
+        where: "$COLUMN_USER_ID = ?", whereArgs: ['$uid']);
     for (Map<String, dynamic> eachMap in data) {
       var expensemodel = expenseModel.fromMap(eachMap);
       mData.add(expensemodel);
@@ -145,7 +148,7 @@ class DBHelper {
   //get UUID (user unique id)
   Future<int> getUUID() async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("UID")!;
+    return prefs.getInt("UID") ?? 0;
   }
 
   //set UUID

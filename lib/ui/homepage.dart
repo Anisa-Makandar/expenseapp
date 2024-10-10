@@ -1,4 +1,4 @@
-import 'package:expenseapplication/ui/dashboardpage.dart';
+import 'package:expenseapplication/ui/bottom_navpage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {

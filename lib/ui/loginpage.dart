@@ -3,6 +3,7 @@ import 'package:expenseapplication/ui/homepage.dart';
 import 'package:expenseapplication/ui/registrationpage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailcontroller = TextEditingController();
@@ -164,6 +165,9 @@ class LoginPage extends StatelessWidget {
                             emailcontroller.text.toString(),
                             passcontroller.text.toString());
                         if (check) {
+                          var prefs = await SharedPreferences.getInstance();
+                          int userId = await db.getUUID();
+                          prefs.setInt("UID", userId);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),

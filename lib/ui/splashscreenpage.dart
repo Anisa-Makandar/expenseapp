@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:expenseapplication/ui/homepage.dart';
 import 'package:expenseapplication/ui/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,10 +15,41 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    getValuefromPrefs();
+    // Timer(Duration(seconds: 4), () {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => LoginPage()),
+    //   );
+    // });
+  }
+
+  Future<void> getValuefromPrefs() async {
+    var prefs = await SharedPreferences.getInstance();
+    //fetch uid
+
+    int? uid = prefs.getInt("UID");
+    if (uid == null || uid == 0) {
+      navigateToLoginPage();
+    } else {
+      navigateToHomePage();
+    }
+  }
+
+  void navigateToLoginPage() {
     Timer(Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    });
+  }
+
+  void navigateToHomePage() {
+    Timer(Duration(seconds: 4), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     });
   }

@@ -1,4 +1,3 @@
-import 'package:expenseapplication/ui/dashboardpage.dart';
 import 'package:flutter/material.dart';
 
 class StaticDetails extends StatefulWidget {
