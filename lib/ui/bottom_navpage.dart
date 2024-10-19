@@ -1,5 +1,6 @@
 import 'package:expenseapplication/ui/addexpensepage.dart';
 import 'package:expenseapplication/ui/dashboardpage.dart';
+import 'package:expenseapplication/ui/settingthemepage.dart';
 import 'package:expenseapplication/ui/staticspendingpage.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,8 @@ class Dashboardpage extends StatefulWidget {
 }
 
 class _DashboardpageState extends State<Dashboardpage> {
-  int _currentIndex = 0; // Track the selected index
+  int _currentIndex = 0;
+  bool isDarkTheme = false;
 
   // List of pages to navigate to
   final List<Widget> _pages = [
@@ -18,17 +20,21 @@ class _DashboardpageState extends State<Dashboardpage> {
     AddExpensePage(),
     AddExpensePage(),
     AddExpensePage(),
+    Settingthemepage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFF6F6F6),
+        // backgroundColor: Color(0xFFF6F6F6),
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Color(0xFFF6F6F6)
+            : Colors.black,
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.only(top: 1, left: 1, right: 1),
               // padding: const EdgeInsets.only(left: 5, right: 7, top: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,16 +42,41 @@ class _DashboardpageState extends State<Dashboardpage> {
                 children: [
                   Image.asset(
                     'assets/images/bg_logoexpenseapp.png',
-                    height: 40,
+                    height: 34,
                     width: 120,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                     fit: BoxFit.cover,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.search,
-                      size: 35,
-                    ),
+                  Row(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(top: 2.0),
+                          child: PopupMenuButton(
+                              icon: Icon(Icons.more_vert, size: 26),
+                              onSelected: (item) => onSelected(context, item),
+                              itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      value: 0,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.settings,
+                                              color: Colors.black),
+                                          SizedBox(width: 8),
+                                          Text('Settings'),
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Icon(
+                          Icons.search,
+                          size: 26,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -121,5 +152,52 @@ class _DashboardpageState extends State<Dashboardpage> {
         ),
       ),
     );
+  }
+
+  // Widget getSettingToggleUI(BuildContext context) {
+  //   return Container(
+  //     height: 39,
+  //     width: 120,
+  //     decoration: BoxDecoration(
+  //       // Set background color based on theme
+  //       color: Theme.of(context).brightness == Brightness.light
+  //           ? Color(0xFFD7DDFF)
+  //           : Colors.black,
+  //       borderRadius: BorderRadius.circular(6), // Rounded corners
+  //     ),
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(2.0),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             "Setting",
+  //             style: TextStyle(
+  //               color: Theme.of(context).brightness == Brightness.light
+  //                   ? Colors.black
+  //                   : Color(0xFFF6F6F6),
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //           SizedBox(width: 8), // Space between text and icon
+  //           Icon(
+  //             Icons.settings,
+  //             color: Theme.of(context).brightness == Brightness.light
+  //                 ? Colors.black
+  //                 : Color(0xFFF6F6F6),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => Settingthemepage()),
+        );
+        break;
+    }
   }
 }

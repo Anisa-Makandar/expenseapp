@@ -13,6 +13,8 @@ class AddExpensePage extends StatefulWidget {
 }
 
 class _AddExpensePageState extends State<AddExpensePage> {
+  MediaQueryData? mediaQueryData;
+  bool isLandscape = false;
   TextEditingController titlecontroller = TextEditingController();
 
   TextEditingController desccontroller = TextEditingController();
@@ -39,7 +41,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
     // }
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFF6F6F6),
+        // backgroundColor: Color(0xFFF6F6F6),
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Color(0xFFF6F6F6)
+            : Colors.black,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -49,21 +54,24 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   controller: titlecontroller,
                   decoration: mTextFieldDecor(
                       hintText: "Enter your expense title here ",
-                      labelText: "Title"),
+                      labelText: "Title",
+                      context: context),
                 ),
                 mSpacer(),
                 TextField(
                   controller: desccontroller,
                   decoration: mTextFieldDecor(
                       hintText: "Enter your expense description here",
-                      labelText: "Desc"),
+                      labelText: "Desc",
+                      context: context),
                 ),
                 mSpacer(),
                 TextField(
                   controller: amtcontroller,
                   decoration: mTextFieldDecor(
                       hintText: "Enter your expense ammount here",
-                      labelText: "Amount"),
+                      labelText: "Amount",
+                      context: context),
                 ),
                 mSpacer(),
                 SizedBox(
@@ -72,6 +80,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(
                           width: 1,
+                          color: Theme.of(context).brightness ==
+                                  Brightness.light
+                              ? Colors.black // Dark border color in light mode
+                              : Color(0xFFF6F6F6),
                         ),
                         minimumSize: Size(double.infinity, 52),
                         maximumSize: Size(double.infinity, 52),
@@ -135,6 +147,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(
                           width: 1,
+                          color: Theme.of(context).brightness ==
+                                  Brightness.light
+                              ? Colors.black // Dark border color in light mode
+                              : Color(0xFFF6F6F6),
                         ),
                         minimumSize: Size(double.infinity, 52),
                         maximumSize: Size(double.infinity, 52),
@@ -175,7 +191,12 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 DropdownMenu(
                   inputDecorationTheme: InputDecorationTheme(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black // Dark border color in light mode
+                            : Color(0xFFF6F6F6),
+                      ),
                       borderRadius: BorderRadius.circular(21),
                     ),
                   ),
@@ -198,6 +219,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       style: OutlinedButton.styleFrom(
                           side: BorderSide(
                             width: 1,
+                            color: Theme.of(context).brightness ==
+                                    Brightness.light
+                                ? Colors
+                                    .black // Dark border color in light mode
+                                : Color(0xFFF6F6F6),
                           ),
                           minimumSize: Size(double.infinity, 52),
                           maximumSize: Size(double.infinity, 52),
